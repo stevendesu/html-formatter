@@ -1,0 +1,35 @@
+{
+  "name": "html-formatter",
+  "version": "0.1.0",
+  "description": "Parses HTML into a DOM tree then re-writes the file according to (proper? specified? my preferred?) standards for tabs, new-lines, etc.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stevendesu/html-formatter.git"
+  },
+  "keywords": [
+    "html",
+    "beautify",
+    "beautifier",
+    "code-quality",
+    "format",
+    "formatter",
+    "pretty",
+    "prettify",
+    "js-beautify",
+    "html-tidy",
+    "tidy-html5"
+  ],
+  "author": "Steven Barnett <steven.barnett@gmail.com>",
+  "license": "MITNFA",
+  "bugs": {
+    "url": "https://github.com/stevendesu/html-formatter/issues"
+  },
+  "homepage": "https://github.com/stevendesu/html-formatter#readme",
+  "dependencies": {
+    "htmlparser2": "^3.9.2"
+  }
+}
