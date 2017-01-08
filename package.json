@@ -1,6 +1,6 @@
 {
   "name": "html-formatter",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Parses HTML into a DOM tree then re-writes the file according to (proper? specified? my preferred?) standards for tabs, new-lines, etc.",
   "main": "index.js",
   "scripts": {

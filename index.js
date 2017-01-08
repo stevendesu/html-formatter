@@ -1,6 +1,16 @@
 const fs = require('fs');
 const htmlparser = require("htmlparser2");
 
+const selfClosingHtmlTags = [
+	'area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'keygen', 'link', 'meta', 'param', 'source',
+	'track', 'wbr'
+];
+const booleanAttributes = [
+	'async', 'autocomplete', 'autofocus', 'autoplay', 'autosave', 'checked', 'contenteditable', 'controls', 'defer',
+	'disabled', 'download', 'draggable', 'dropzone', 'hidden', 'ismap', 'loop', 'multiple', 'muted', 'novalidate',
+	'open', 'preload', 'readonly', 'required', 'reversed', 'sandbox', 'seamless', 'selected', 'spellcheck', 'wrap'
+];
+
 // General TODO:
 //  - Add options
 //  - Add unit tests
@@ -116,9 +126,32 @@ function printTag(tag, end, selfClosing)
 		for (var i = 0; i < attribs.length; i++)
 		{
 			// TODO: stop the async="" attributes
-			retVal += " " + attribs[i] + "=\"" + tag.attribs[attribs[i]] + "\"";
+			if (booleanAttributes.indexOf(attribs[i]) !== -1)
+			{
+				retVal += " " + attribs[i];
+			}
+			else
+			{
+				retVal += " " + attribs[i] + "=\"" + tag.attribs[attribs[i]] + "\"";
+			}
 		}
-		return retVal + (selfClosing ? " /" : "") + ">";
+		if (selfClosing)
+		{
+			if (selfClosingHtmlTags.indexOf(tag.name) !== -1)
+			{
+				return retVal + " />";
+			}
+			else
+			{
+				// Although this tag contains no content, it can't self-close per the HTML spec
+				// Attempting to self-close it could lead to weird browser quirks
+				return retVal + "></" + tag.name + ">";
+			}
+		}
+		else
+		{
+			return retVal + ">";
+		}
 	}
 }
 
