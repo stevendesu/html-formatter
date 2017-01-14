@@ -17,8 +17,24 @@ const booleanAttributes = [
 //  - Get this guy on npmjs
 //  - Ability to use as JS package and not just CLI tool
 
-const file = fs.readFileSync(process.argv[2], 'utf8');
+let file = fs.readFileSync(process.argv[2], 'utf8');
 let output = "";
+
+// Before doing any parsing:
+// Laravel has a LOT of files which start with <?php but don't have an ending tag
+// This is entirely valid, but breaks this parser
+// Let's find such patterns and set them aside to keep them safe
+let pos = 0;
+let endingPHPTag = "";
+while ((pos = file.indexOf('<?php', pos)) !== -1)
+{
+	if (file.indexOf('?>', pos) === -1)
+	{
+		// No ending tag
+		endingPHPTag = file.substr(pos);
+		file = file.substr(0, pos);
+	}
+}
 
 let handler = new htmlparser.DomHandler(function(error, dom)
 {
@@ -39,6 +55,11 @@ function buildOutput(dom)
 {
 	(function DFS(node, indent)
 	{
+		if (!node)
+		{
+			// Empty file, I guess?
+			return;
+		}
 		do
 		{
 			switch (node.type)
@@ -155,5 +176,11 @@ function printTag(tag, end, selfClosing)
 	}
 }
 
+output += endingPHPTag;
+
+// Remove starting and ending new-lines
+// ... but leave one
+output = output.trim() + "\n";
+
 // Trailing new-line at end of file
-fs.writeFileSync(process.argv[2], output + "\n", 'utf8');
+fs.writeFileSync(process.argv[2], output, 'utf8');
