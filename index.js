@@ -147,7 +147,7 @@ function printTag(tag, end, selfClosing)
 		for (var i = 0; i < attribs.length; i++)
 		{
 			// TODO: stop the async="" attributes
-			if (booleanAttributes.indexOf(attribs[i]) !== -1)
+			if (booleanAttributes.indexOf(attribs[i]) !== -1 && tag.attribs[attribs[i]] == "")
 			{
 				retVal += " " + attribs[i];
 			}
